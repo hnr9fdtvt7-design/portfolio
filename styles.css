@@ -22,6 +22,8 @@
 
 html {
   scroll-behavior: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 body {
@@ -35,6 +37,14 @@ body {
   background-attachment: fixed;
   position: relative;
   overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 
 body::before {
@@ -83,6 +93,22 @@ body::after {
   padding: 6.5rem 0;
   position: relative;
   z-index: 2;
+}
+
+main > .section {
+  --section-scale: 1;
+  transform: scale(var(--section-scale));
+  transform-origin: 50% 42%;
+  will-change: transform;
+  backface-visibility: hidden;
+  transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  main > .section {
+    transform: none;
+    will-change: auto;
+  }
 }
 
 .section .container {
