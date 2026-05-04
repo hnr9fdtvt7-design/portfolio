@@ -2,7 +2,8 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0b0c">
   <title>Shehh Studio</title>
   <meta name="description" content="Премиальный сайт для вашего бизнеса" />
   <meta property="og:type" content="website">
@@ -14,6 +15,9 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Shehh Studio — сайт, который продаёт" />
   <meta name="twitter:description" content="Премиальный сайт для вашего бизнеса" />
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&f[]=general-sans@500,600,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -66,31 +70,28 @@
       <div class="container">
         <p class="section-label reveal">Наши работы</p>
         <h2 class="reveal works-title">САЙТ - ИНСТРУМЕНТ ДЛЯ БИЗНЕСА</h2>
-        <div class="case-grid" data-cursor-glow>
+        <div class="case-grid">
           <a class="case-card reveal" href="https://matreshkaevent.ru" target="_blank" rel="noopener noreferrer">
             <div class="case-visual case-visual-photo" aria-hidden="true">
-              <img src="matreshka-skolkovo.png" alt="" width="1200" height="900" loading="lazy" decoding="async">
+              <img src="matreshka-skolkovo.png" alt="" width="1200" height="900" loading="eager" fetchpriority="high" decoding="async" sizes="(max-width: 680px) 100vw, (max-width: 980px) 50vw, 33vw">
             </div>
             <h3>Matreshka</h3>
             <p>Платформа для мероприятий в Сколково.<br>Уникальное пространство —<br>визитная карточка центра.</p>
           </a>
           <a class="case-card reveal" href="https://el-ed.ru/" target="_blank" rel="noopener noreferrer">
             <div class="case-visual case-visual-photo" aria-hidden="true">
-              <img src="egeland.png" alt="" width="400" height="400" loading="lazy" decoding="async">
+              <img src="egeland.png" alt="" width="400" height="400" loading="lazy" decoding="async" sizes="(max-width: 680px) 100vw, (max-width: 980px) 50vw, 33vw">
             </div>
             <h3>EGE-LAND</h3>
             <p>Онлайн-школа подготовки к ЕГЭ и ОГЭ.<br>Топ-1 по версии Study.ru<br>Увеличили выручку на 970 млн.</p>
           </a>
           <a class="case-card reveal" href="https://playreplay-final.webflow.io/" target="_blank" rel="noopener noreferrer">
             <div class="case-visual case-visual-photo" aria-hidden="true">
-              <img src="playreplay-logo.png" alt="" width="512" height="512" loading="lazy" decoding="async">
+              <img src="playreplay-logo.png" alt="" width="512" height="512" loading="lazy" decoding="async" sizes="(max-width: 680px) 100vw, (max-width: 980px) 50vw, 33vw">
             </div>
             <h3>PlayReplay</h3>
             <p>Платформа для теннисных<br>клубов и игроков.<br>Одобрено Шведской Федерацией спорта.</p>
           </a>
-          <div class="process-cursor-layer" aria-hidden="true">
-            <span class="process-cursor-shade"></span>
-          </div>
         </div>
       </div>
     </section>
@@ -99,7 +100,7 @@
       <div class="container">
         <p class="section-label reveal">ИНСТРУМЕНТЫ</p>
         <h2 class="reveal works-title">НАБОР ДЛЯ ПРЕМИАЛЬНОГО РОСТА</h2>
-        <div class="service-grid" data-cursor-glow>
+        <div class="service-grid">
           <article class="card reveal">
             <h3>Стильный визуал</h3>
             <p>Премиальное цифровое присутствие повышает доверие, формирует мощное впечатление и вызывает визуальный экстаз.</p>
@@ -116,9 +117,6 @@
             <h3>UX/UI-стратегия</h3>
             <p>Интерфейс, который убирает барьеры, завлекает пользователя и повышает качество взаимодействия.</p>
           </article>
-          <div class="process-cursor-layer" aria-hidden="true">
-            <span class="process-cursor-shade"></span>
-          </div>
         </div>
       </div>
     </section>
@@ -127,7 +125,7 @@
       <div class="container">
         <p class="section-label reveal">Процесс</p>
         <h2 class="reveal works-title">СИСТЕМА ОТ СТРАТЕГИИ ДО ЗАПУСКА</h2>
-        <div class="process-list" data-cursor-glow>
+        <div class="process-list">
           <article class="card process-item reveal">
             <span class="process-step">01</span>
             <div>
@@ -149,9 +147,6 @@
               <p>Выгруз быстрого и технологичного сайта, тестирование и финальные штрихи</p>
             </div>
           </article>
-          <div class="process-cursor-layer" aria-hidden="true">
-            <span class="process-cursor-shade"></span>
-          </div>
         </div>
       </div>
     </section>
@@ -183,7 +178,7 @@
     <div class="container footer-bar">
       <div class="footer-brand">
         <a href="#hero" class="logo logo--inline"><span>SHEHH</span><span>STUDIO</span></a>
-        <p class="footer-copy">© 2026 Shehh Studio — Николай Шех</p>
+        <p class="footer-copy">© 2026 Shehh Studio — Николай Шеховцев</p>
       </div>
       <nav class="footer-nav" aria-label="Навигация в подвале">
         <a href="#case-studies">Работы</a>
