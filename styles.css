@@ -944,8 +944,23 @@ p {
     display: none;
   }
 
+  /* Два видимых элемента: явно 1-я и 3-я колонки — отступы слева/справа симметричны */
   .nav-grid {
     grid-template-columns: auto 1fr auto;
+  }
+
+  .nav-grid > .logo {
+    grid-column: 1;
+    justify-self: start;
+  }
+
+  .nav-grid > .site-nav {
+    grid-column: 2;
+  }
+
+  .nav-grid > .btn {
+    grid-column: 3;
+    justify-self: end;
   }
 
   .hero-title,
