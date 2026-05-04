@@ -1064,6 +1064,15 @@ p {
     box-sizing: border-box;
   }
 
+  /* Подвал на всю ширину экрана */
+  .site-footer {
+    margin-left: calc(-1 * var(--page-inset-left));
+    margin-right: calc(-1 * var(--page-inset-right));
+    padding-left: var(--page-inset-left);
+    padding-right: var(--page-inset-right);
+    box-sizing: border-box;
+  }
+
   .footer-bar {
     display: flex;
     flex-direction: column;
@@ -1072,14 +1081,24 @@ p {
     padding: 1.75rem 0 1.5rem;
     gap: 1.5rem;
     min-height: 0;
+    width: 100%;
   }
 
-  /* Ссылки сверху, бренд и копирайт снизу слева (DOM: бренд → навигация) */
+  /* Ссылки сверху по центру блока; бренд снизу слева (DOM: бренд → навигация) */
   .footer-nav {
     order: -1;
     justify-self: auto;
-    justify-content: flex-start;
+    justify-content: center;
+    align-self: stretch;
     width: 100%;
+  }
+
+  /* Блок «О нас»: основной текст — по ширине */
+  #about .about-grid > .reveal:last-child p {
+    text-align: justify;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    text-wrap: pretty;
   }
 
   .footer-brand {
