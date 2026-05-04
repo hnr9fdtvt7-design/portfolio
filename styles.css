@@ -1047,8 +1047,11 @@ p {
   }
 
   .hero-metrics {
+    /* Симметричные боковые отступы у текста: база × 1.1 */
+    --hero-metrics-side: calc(clamp(0.48rem, 3.6vw, 1rem) * 1.1);
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.35rem 0.4rem;
+    gap: calc(0.35rem * 1.1) calc(0.4rem * 1.1);
+    padding-inline: var(--hero-metrics-side);
     width: calc(100% + var(--page-inset-left) + var(--page-inset-right));
     max-width: none;
     margin-left: calc(-1 * var(--page-inset-left));
@@ -1058,9 +1061,10 @@ p {
     text-align: center;
   }
 
+  /* Линия на всю ширину блока (вне внутренних отступов текста) */
   .hero-metrics::before {
-    left: 0;
-    right: 0;
+    left: calc(-1 * var(--hero-metrics-side));
+    right: calc(-1 * var(--hero-metrics-side));
   }
 
   .hero-metrics .metric-value {
