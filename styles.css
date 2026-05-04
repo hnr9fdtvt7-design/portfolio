@@ -1047,13 +1047,26 @@ p {
   }
 
   .hero-metrics {
-    grid-template-columns: 1fr;
-    width: 100%;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.35rem 0.4rem;
+    width: calc(100% + var(--page-inset-left) + var(--page-inset-right));
+    max-width: none;
+    margin-left: calc(-1 * var(--page-inset-left));
+    margin-right: calc(-1 * var(--page-inset-right));
+    box-sizing: border-box;
+    justify-items: center;
+    text-align: center;
   }
 
   .hero-metrics::before {
-    left: 5%;
-    right: 5%;
+    left: 0;
+    right: 0;
+  }
+
+  .hero-metrics .metric-value {
+    font-size: calc(0.92rem * 0.8);
+    white-space: nowrap;
+    text-align: center;
   }
 
   h2 {
@@ -1159,8 +1172,8 @@ p {
     font-size: clamp(1.65rem, 9.2vw, 2.35rem);
   }
 
-  .metric-value {
-    font-size: 0.82rem;
+  .hero-metrics .metric-value {
+    font-size: clamp(0.52rem, 2.15vw, calc(0.92rem * 0.8));
   }
 }
 
