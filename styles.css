@@ -673,6 +673,10 @@ p {
   margin-top: 1rem;
 }
 
+.about-copy--mobile {
+  display: none;
+}
+
 #about .about-grid {
   text-align: center;
 }
@@ -1113,6 +1117,14 @@ p {
 
   .footer-discuss {
     display: none;
+  }
+
+  #about .about-copy--desktop {
+    display: none;
+  }
+
+  #about .about-copy--mobile {
+    display: block;
   }
 }
 
