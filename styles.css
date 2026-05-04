@@ -1076,15 +1076,15 @@ p {
   .footer-bar {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    text-align: left;
+    align-items: center;
+    text-align: center;
     padding: 1.75rem 0 1.5rem;
     gap: 1.5rem;
     min-height: 0;
     width: 100%;
   }
 
-  /* Ссылки сверху по центру блока; бренд снизу слева (DOM: бренд → навигация) */
+  /* Ссылки сверху по центру; бренд и копирайт снизу по центру */
   .footer-nav {
     order: -1;
     justify-self: auto;
@@ -1093,27 +1093,21 @@ p {
     width: 100%;
   }
 
-  /* Блок «О нас»: основной текст — по ширине */
-  #about .about-grid > .reveal:last-child p {
-    text-align: justify;
-    hyphens: auto;
-    -webkit-hyphens: auto;
-    text-wrap: pretty;
-  }
-
   .footer-brand {
     order: 0;
-    align-items: flex-start;
-    text-align: left;
+    align-items: center;
+    text-align: center;
+    width: 100%;
   }
 
   .footer-brand .logo--inline {
     margin-left: 0;
-    align-self: flex-start;
+    align-self: center;
+    justify-content: center;
   }
 
   .footer-copy {
-    text-align: left;
+    text-align: center;
     max-width: 100%;
   }
 
