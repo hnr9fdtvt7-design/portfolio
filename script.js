@@ -13,8 +13,21 @@
   const scaleSections = document.querySelectorAll("main > .section");
   const useLenis = !coarsePointer && !reduceMotion && !reducedData;
 
+  const MOBILE_LAYOUT_MAX = 1024;
+
+  function isMobileLayoutWidth() {
+    return window.innerWidth <= MOBILE_LAYOUT_MAX;
+  }
+
   function updateSectionScales() {
-    if (reduceMotion || coarsePointer || !scaleSections.length) return;
+    if (reduceMotion || coarsePointer || isMobileLayoutWidth() || !scaleSections.length) {
+      if (isMobileLayoutWidth() || coarsePointer || reduceMotion) {
+        scaleSections.forEach((section) => {
+          section.style.setProperty("--section-scale", "1");
+        });
+      }
+      return;
+    }
 
     const vh = window.innerHeight;
     const viewportMid = vh * 0.5;

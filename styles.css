@@ -30,6 +30,7 @@ html {
   -ms-overflow-style: none;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  overflow-x: hidden;
 }
 
 body {
@@ -46,6 +47,7 @@ body {
   background-attachment: fixed;
   position: relative;
   overflow-x: hidden;
+  overscroll-behavior-x: none;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -156,6 +158,26 @@ html.perf-lite .cta-wrap {
   width: 100%;
   max-width: var(--container);
   margin: 0 auto;
+  min-width: 0;
+}
+
+/* Предотвращает «раздувание» колонок grid/flex в Chrome, Safari, Yandex, Edge */
+.nav-grid > *,
+.hero-grid > *,
+.hero-metrics > *,
+.service-grid > *,
+.case-grid > *,
+.process-list > *,
+.footer-bar > *,
+.two-col > * {
+  min-width: 0;
+}
+
+img,
+svg,
+video {
+  max-width: 100%;
+  height: auto;
 }
 
 .section {
@@ -252,6 +274,8 @@ h3 {
   font-family: "General Sans", "Satoshi", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
   line-height: 1.12;
   letter-spacing: 0;
+  overflow-wrap: break-word;
+  word-wrap: break-word; /* legacy Edge / старый WebKit */
 }
 
 h2 {
@@ -301,7 +325,7 @@ p {
 .nav-grid {
   min-height: 78px;
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
   gap: 1rem;
 }
@@ -424,17 +448,19 @@ p {
   grid-column: 1;
   font-size: clamp(2.7rem, 7vw, 5.9rem);
   margin-bottom: 0.8rem;
-  max-width: none;
+  max-width: 100%;
   white-space: nowrap;
   text-align: center;
+  overflow-wrap: break-word;
 }
 
 .hero-subtitle {
   grid-column: 1;
   font-size: 1.15rem;
-  max-width: none;
+  max-width: 100%;
   white-space: nowrap;
   text-align: center;
+  overflow-wrap: break-word;
 }
 
 .hero-cta {
@@ -465,6 +491,7 @@ p {
   left: 10%;
   right: 11.5%;
   height: 1px;
+  background: rgba(255, 255, 255, 0.14);
   background: color-mix(in srgb, var(--line) 77%, var(--text) 23%);
   opacity: 0.65;
 }
@@ -738,6 +765,7 @@ p {
   right: 0;
   width: 100%;
   height: 1px;
+  background: rgba(255, 255, 255, 0.14);
   background: color-mix(in srgb, var(--line) 77%, var(--text) 23%);
   opacity: 0.65;
   z-index: 1;
@@ -749,7 +777,7 @@ p {
   z-index: 2;
   min-height: 90px;
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   grid-template-areas: "brand nav discuss";
   align-items: center;
   gap: 1rem 1.5rem;
@@ -913,6 +941,13 @@ p {
     background-attachment: scroll;
   }
 
+  /* Масштаб секций даёт горизонтальный скролл на узких экранах (в т.ч. «десктопный» режим в моб. браузере) */
+  main > .section {
+    transform: none !important;
+    will-change: auto !important;
+    transition: none !important;
+  }
+
   .hero-title {
     white-space: normal;
     text-wrap: balance;
@@ -946,7 +981,18 @@ p {
 
   /* Два видимых элемента: явно 1-я и 3-я колонки — отступы слева/справа симметричны */
   .nav-grid {
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto);
+    column-gap: clamp(0.5rem, 2.5vw, 1rem);
+  }
+
+  .nav-grid .logo {
+    max-width: 100%;
+  }
+
+  .nav-grid .btn {
+    flex-shrink: 0;
+    max-width: min(100%, 11.5rem);
+    text-align: center;
   }
 
   .nav-grid > .logo {
@@ -1069,8 +1115,13 @@ p {
 
   .hero-metrics .metric-value {
     font-size: calc(0.92rem * 0.8);
-    white-space: nowrap;
+    white-space: normal;
     text-align: center;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+    word-wrap: break-word;
+    hyphens: auto;
+    -webkit-hyphens: auto;
   }
 
   h2 {
@@ -1167,9 +1218,10 @@ p {
   }
 
   .nav-grid .btn {
-    font-size: 0.82rem;
-    padding-inline: 1rem;
+    font-size: 0.78rem;
+    padding-inline: 0.75rem;
     min-height: 42px;
+    letter-spacing: -0.01em;
   }
 
   .hero-title {
@@ -1177,7 +1229,24 @@ p {
   }
 
   .hero-metrics .metric-value {
-    font-size: clamp(0.52rem, 2.15vw, calc(0.92rem * 0.8));
+    font-size: clamp(0.58rem, 2.65vw, calc(0.92rem * 0.8));
+  }
+}
+
+/* Узкие экраны: метрики в одну колонку — без налезания друг на друга */
+@media (max-width: 340px) {
+  .hero-metrics {
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+    padding-inline: var(--hero-metrics-side);
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .hero-metrics::before {
+    left: 0;
+    right: 0;
   }
 }
 
