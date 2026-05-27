@@ -31,6 +31,7 @@ html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   overflow-x: hidden;
+  overflow-x: clip;
 }
 
 body {
@@ -287,8 +288,9 @@ h2 {
 }
 
 .works-title {
-  max-width: none;
+  max-width: 100%;
   white-space: nowrap;
+  overflow-wrap: break-word;
 }
 
 #process h2.works-title {
@@ -546,6 +548,7 @@ p {
 
 .service-grid .card {
   grid-column: span 6;
+  min-width: 0;
   position: relative;
   transform-origin: center;
   transform: translateY(0) scale(1);
@@ -607,6 +610,9 @@ p {
   max-width: 100%;
   padding-inline: 10%;
   margin-inline: 0;
+  text-wrap: pretty;
+  hyphens: auto;
+  -webkit-hyphens: auto;
 }
 
 .card h3,
@@ -730,12 +736,9 @@ p {
   text-align: inherit;
 }
 
-.partners-section.is-pinned .partners-marquee {
-  cursor: grab;
-}
-
 .partners-strip {
   --partners-strip-space: clamp(2rem, 5vw, 3rem);
+  isolation: isolate;
   margin-left: calc(-1 * var(--page-inset-left));
   margin-right: calc(-1 * var(--page-inset-right));
   padding: var(--partners-strip-space) var(--page-inset-right) var(--partners-strip-space)
@@ -761,32 +764,46 @@ p {
   line-height: 1.12;
 }
 
-@media (max-width: 1024px) {
-  .partners-label {
-    white-space: normal;
-    text-wrap: balance;
-  }
-}
-
 .partners-marquee {
   --partners-logo-gap: clamp(5rem, 12vw, 9rem);
+  --partners-marquee-duration: 26s;
   width: 100%;
+  max-width: 100%;
   margin: 0;
   overflow: hidden;
-  cursor: grab;
+  pointer-events: none;
+  user-select: none;
   -webkit-mask-image: linear-gradient(
     90deg,
-    #000 0%,
-    #000 92%,
+    transparent 0%,
+    #000 6%,
+    #000 94%,
     transparent 100%
   );
-  mask-image: linear-gradient(90deg, #000 0%, #000 92%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
 }
 
 .partners-track {
   display: flex;
+  flex-wrap: nowrap;
   width: max-content;
   will-change: transform;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .partners-track {
+    -webkit-animation: partnersMarqueeScroll var(--partners-marquee-duration, 26s) linear infinite;
+    animation: partnersMarqueeScroll var(--partners-marquee-duration, 26s) linear infinite;
+  }
+}
+
+@keyframes partnersMarqueeScroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
 }
 
 .partners-logos {
@@ -808,7 +825,7 @@ p {
   min-width: 0;
 }
 
-/* Без анимации по скроллу — статичный ряд по центру */
+/* Без анимации — один ряд по центру */
 @media (prefers-reduced-motion: reduce) {
   .partners-marquee {
     -webkit-mask-image: none;
@@ -819,6 +836,7 @@ p {
   .partners-track {
     width: 100%;
     justify-content: center;
+    animation: none;
     transform: none !important;
   }
 
@@ -886,6 +904,12 @@ p {
   .partner-logo--agni:hover {
     filter: grayscale(1) brightness(2.85) contrast(1.06);
     -webkit-filter: grayscale(1) brightness(2.85) contrast(1.06);
+  }
+
+  .partners-marquee .partner-logo:hover {
+    opacity: 0.7;
+    filter: inherit;
+    -webkit-filter: inherit;
   }
 }
 
@@ -1100,7 +1124,8 @@ p {
 }
 
 @keyframes gradientPulse {
-  0% {
+  0%,
+  100% {
     opacity: 0.34;
     transform: scale(1) translate3d(0, 0, 0);
   }
@@ -1108,14 +1133,11 @@ p {
     opacity: 0.48;
     transform: scale(1.03) translate3d(0.8%, -0.5%, 0);
   }
-  100% {
-    opacity: 0.36;
-    transform: scale(1.01) translate3d(-0.8%, 0.8%, 0);
-  }
 }
 
 @keyframes liveDot {
-  0% {
+  0%,
+  100% {
     opacity: 0.8;
     transform: scale(0.9);
     box-shadow: 0 0 0 0 rgba(45, 212, 191, 0.58);
@@ -1124,11 +1146,6 @@ p {
     opacity: 1;
     transform: scale(1);
     box-shadow: 0 0 0 7px rgba(45, 212, 191, 0);
-  }
-  100% {
-    opacity: 0.82;
-    transform: scale(0.92);
-    box-shadow: 0 0 0 0 rgba(45, 212, 191, 0);
   }
 }
 
@@ -1143,19 +1160,8 @@ p {
   }
 }
 
-/* Планшеты portrait, крупные телефоны landscape (до ~1024) */
-@media (max-width: 1024px) {
-  body {
-    background-attachment: scroll;
-  }
-
-  /* Масштаб секций даёт горизонтальный скролл на узких экранах (в т.ч. «десктопный» режим в моб. браузере) */
-  main > .section {
-    transform: none !important;
-    will-change: auto !important;
-    transition: none !important;
-  }
-
+/* Планшеты portrait, крупные телефоны landscape (до ~1100) */
+@media (max-width: 1100px) {
   .hero-title {
     white-space: normal;
     text-wrap: balance;
@@ -1171,7 +1177,8 @@ p {
   }
 
   .works-title,
-  #about h2.works-title {
+  #about h2.works-title,
+  .partners-label {
     white-space: normal;
     text-wrap: balance;
   }
@@ -1179,6 +1186,21 @@ p {
   .cta-wrap h2 {
     max-width: 20ch;
   }
+}
+
+/* Планшеты portrait (до ~1024) */
+@media (max-width: 1024px) {
+  body {
+    background-attachment: scroll;
+  }
+
+  /* Масштаб секций даёт горизонтальный скролл на узких экранах (в т.ч. «десктопный» режим в моб. браузере) */
+  main > .section {
+    transform: none !important;
+    will-change: auto !important;
+    transition: none !important;
+  }
+
 }
 
 /* До «десктопной» навигации: телефоны, малые планшеты (≤980) */
@@ -1274,10 +1296,13 @@ p {
   }
 }
 
-/* Телефоны (≤680): iPhone 12–15, большинство Android до ~430 CSS px */
 @media (max-width: 680px) {
   :root {
     --page-pad-x: clamp(0.75rem, 4.2vw, 1.15rem);
+  }
+
+  #services .service-grid .card p {
+    padding-inline: 8%;
   }
 
   .section {
@@ -1412,6 +1437,18 @@ p {
 
   #about .about-copy--mobile {
     display: block;
+  }
+
+  #about .about-copy--mobile p {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    padding-inline: 10%;
+    margin-inline: auto;
+    text-align: center;
+    text-wrap: pretty;
+    hyphens: auto;
+    -webkit-hyphens: auto;
   }
 }
 
