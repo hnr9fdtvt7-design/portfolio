@@ -307,17 +307,24 @@ p {
   position: sticky;
   top: 0;
   z-index: 25;
+  /* На всю ширину viewport (компенсация горизонтального padding у body) */
+  margin-left: calc(-1 * var(--page-inset-left));
+  margin-right: calc(-1 * var(--page-inset-right));
+  padding-left: var(--page-inset-left);
+  padding-right: var(--page-inset-right);
   padding-top: env(safe-area-inset-top, 0px);
+  box-sizing: border-box;
+  width: auto;
   border-bottom: 1px solid transparent;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
   background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
+/* Затемнение только на тач-устройствах */
 @media (pointer: coarse) {
   .site-header {
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+    border-bottom-color: rgba(255, 255, 255, 0.08);
     background: rgba(7, 8, 13, 0.88);
   }
 }
@@ -523,10 +530,17 @@ p {
   position: relative;
 }
 
-.service-grid,
-.case-grid {
+.service-grid {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
+  gap: 1.25rem;
+}
+
+/* Flex + justify-content: center — третья карточка по центру при переносе на 2 колонки */
+.case-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 1.25rem;
 }
 
@@ -586,6 +600,13 @@ p {
   z-index: 7;
 }
 
+#services .service-grid .card p {
+  width: 90%;
+  max-width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .card h3,
 .case-card h3 {
   font-size: 1.35rem;
@@ -593,7 +614,9 @@ p {
 }
 
 .case-grid .case-card {
-  grid-column: span 4;
+  flex: 0 1 calc((100% - 2 * 1.25rem) / 3);
+  max-width: calc((100% - 2 * 1.25rem) / 3);
+  min-width: 0;
   transform-origin: center;
   transform: translateY(0) scale(1);
   will-change: transform;
@@ -694,6 +717,189 @@ p {
   letter-spacing: 0;
   margin: 0 auto 0.25rem;
   font-family: "Satoshi", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+/* Полоска логотипов партнёров (между «Процесс» и «О нас») */
+.partners-section {
+  padding: clamp(1rem, 2.5vw, 1.75rem) 0 clamp(2rem, 5vw, 3.25rem);
+}
+
+.partners-section .container {
+  text-align: inherit;
+}
+
+.partners-section.is-pinned .partners-marquee {
+  cursor: grab;
+}
+
+.partners-strip {
+  --partners-strip-space: clamp(2rem, 5vw, 3rem);
+  margin-left: calc(-1 * var(--page-inset-left));
+  margin-right: calc(-1 * var(--page-inset-right));
+  padding: var(--partners-strip-space) var(--page-inset-right) var(--partners-strip-space)
+    var(--page-inset-left);
+  box-sizing: border-box;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--partners-strip-space);
+}
+
+.partners-label {
+  margin: 0;
+  margin-bottom: 0;
+  text-align: center;
+  color: var(--text);
+  max-width: none;
+  white-space: nowrap;
+  font-size: clamp(1.3rem, 2.67vw, 2.13rem);
+  line-height: 1.12;
+}
+
+@media (max-width: 1024px) {
+  .partners-label {
+    white-space: normal;
+    text-wrap: balance;
+  }
+}
+
+.partners-marquee {
+  --partners-logo-gap: clamp(5rem, 12vw, 9rem);
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+  cursor: grab;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    #000 0%,
+    #000 92%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(90deg, #000 0%, #000 92%, transparent 100%);
+}
+
+.partners-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+
+.partners-logos {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: var(--partners-logo-gap);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.partners-logos li {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+}
+
+/* Без анимации по скроллу — статичный ряд по центру */
+@media (prefers-reduced-motion: reduce) {
+  .partners-marquee {
+    -webkit-mask-image: none;
+    mask-image: none;
+    overflow: visible;
+  }
+
+  .partners-track {
+    width: 100%;
+    justify-content: center;
+    transform: none !important;
+  }
+
+  .partners-logos {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+/*
+  Лого без заливки: только форма картинки.
+  --mono: тёмный знак на прозрачном → белый (egeland, skolkovo, relod).
+  --light: лого на белом фоне jpg → multiply убирает фон.
+  --dark: лого на тёмном фоне → screen осветляет.
+*/
+.partner-logo {
+  display: block;
+  height: clamp(48px, 8vw, 72px);
+  width: auto;
+  max-width: min(240px, 38vw);
+  object-fit: contain;
+  opacity: 0.7;
+  transition: opacity 440ms ease, filter 440ms ease;
+}
+
+.partner-logo--mono {
+  filter: grayscale(1) invert(1);
+  -webkit-filter: grayscale(1) invert(1);
+}
+
+.partner-logo--light {
+  mix-blend-mode: multiply;
+  filter: grayscale(1) brightness(1.25);
+  -webkit-filter: grayscale(1) brightness(1.25);
+}
+
+.partner-logo--dark {
+  mix-blend-mode: screen;
+  filter: grayscale(1) brightness(1.1);
+  -webkit-filter: grayscale(1) brightness(1.1);
+}
+
+/* AGNI: тёмно-красный на чёрном → светло-серый / почти белый */
+.partner-logo--agni {
+  mix-blend-mode: screen;
+  filter: grayscale(1) brightness(2.45) contrast(1.06);
+  -webkit-filter: grayscale(1) brightness(2.45) contrast(1.06);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .partner-logo:hover {
+    opacity: 1;
+  }
+
+  .partner-logo--light:hover {
+    filter: grayscale(1) brightness(1.45);
+    -webkit-filter: grayscale(1) brightness(1.45);
+  }
+
+  .partner-logo--dark:hover {
+    filter: grayscale(1) brightness(1.25);
+    -webkit-filter: grayscale(1) brightness(1.25);
+  }
+
+  .partner-logo--agni:hover {
+    filter: grayscale(1) brightness(2.85) contrast(1.06);
+    -webkit-filter: grayscale(1) brightness(2.85) contrast(1.06);
+  }
+}
+
+@media (max-width: 680px) {
+  .partners-label {
+    font-size: clamp(0.97rem, 4.33vw, 1.43rem);
+  }
+
+  .partners-marquee {
+    --partners-logo-gap: clamp(3.5rem, 14vw, 6rem);
+  }
+
+  .partner-logo {
+    max-width: min(200px, 48vw);
+    height: clamp(40px, 10vw, 60px);
+  }
 }
 
 .about-grid p + p {
@@ -1022,10 +1228,6 @@ p {
   .service-grid .card {
     grid-column: span 12;
   }
-
-  .case-grid .case-card {
-    grid-column: span 12;
-  }
 }
 
 /* Планшет portrait / широкий телефон: две колонки карточек (640–980) */
@@ -1035,9 +1237,18 @@ p {
   }
 }
 
+/* Наши работы: 2 колонки, третья карточка — по центру ряда */
 @media (min-width: 720px) and (max-width: 980px) {
   .case-grid .case-card {
-    grid-column: span 6;
+    flex: 0 1 calc((100% - 1.25rem) / 2);
+    max-width: calc((100% - 1.25rem) / 2);
+  }
+}
+
+@media (max-width: 719px) {
+  .case-grid .case-card {
+    flex: 0 1 100%;
+    max-width: 100%;
   }
 }
 
@@ -1140,15 +1351,6 @@ p {
 
   .nav-grid {
     min-height: 68px;
-  }
-
-  /* Шапка на всю ширину экрана (компенсация padding у body) */
-  .site-header {
-    margin-left: calc(-1 * var(--page-inset-left));
-    margin-right: calc(-1 * var(--page-inset-right));
-    padding-left: var(--page-inset-left);
-    padding-right: var(--page-inset-right);
-    box-sizing: border-box;
   }
 
   /* Подвал на всю ширину экрана */
