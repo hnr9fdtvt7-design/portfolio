@@ -600,11 +600,13 @@ p {
   z-index: 7;
 }
 
+/* Инструменты: описание в карточках — отступ 10% слева и справа */
 #services .service-grid .card p {
-  width: 90%;
-  max-width: 90%;
-  margin-left: auto;
-  margin-right: auto;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  padding-inline: 10%;
+  margin-inline: 0;
 }
 
 .card h3,
