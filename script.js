@@ -79,17 +79,50 @@
     activePointerHoverCard = next;
   }
 
-  /** Дубликат ряда для бесшовного CSS-цикла */
+  /** Два одинаковых ряда + точная ширина цикла в px (без рывка на стыке) */
   function initPartnersMarquee() {
     if (reduceMotion) return;
     const track = document.querySelector("#partners .partners-track");
-    const row = track?.querySelector(".partners-logos:not([aria-hidden])");
-    if (!track || !row) return;
-    if (track.querySelector(".partners-logos[aria-hidden]")) return;
-    const clone = row.cloneNode(true);
-    clone.setAttribute("aria-hidden", "true");
-    track.appendChild(clone);
-    track.classList.add("partners-track--ready");
+    if (!track) return;
+
+    let row = track.querySelector(".partners-logos:not([aria-hidden])");
+    if (!row) {
+      row = track.querySelector(".partners-logos");
+      row?.removeAttribute("aria-hidden");
+    }
+    if (!row) return;
+
+    row.querySelectorAll('li[aria-hidden="true"]').forEach((li) => li.remove());
+    delete row.dataset.duplicated;
+
+    track.querySelectorAll(".partners-logos[aria-hidden]").forEach((el) => el.remove());
+
+    if (!track.querySelector(".partners-logos[aria-hidden]")) {
+      const clone = row.cloneNode(true);
+      clone.setAttribute("aria-hidden", "true");
+      track.appendChild(clone);
+    }
+
+    const measureLoop = () => {
+      const set = track.querySelector(".partners-logos:not([aria-hidden])");
+      if (!set) return;
+      const w = set.getBoundingClientRect().width;
+      if (w > 1) {
+        track.style.setProperty("--partners-loop", `${w}px`);
+      }
+    };
+
+    measureLoop();
+    window.addEventListener("resize", measureLoop, { passive: true });
+    window.addEventListener("load", measureLoop, { passive: true });
+
+    if ("ResizeObserver" in window) {
+      const ro = new ResizeObserver(measureLoop);
+      ro.observe(track);
+      track.querySelectorAll(".partners-logos img").forEach((img) => ro.observe(img));
+    }
+
+    track.dataset.marqueeReady = "true";
   }
 
   initPartnersMarquee();
