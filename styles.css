@@ -1117,6 +1117,33 @@ p {
   transform: translateY(0);
 }
 
+/* Процесс: пункты въезжают слева, по очереди */
+.process-list .card.process-item.reveal {
+  transform: translateX(-48px);
+  transition:
+    opacity 700ms ease,
+    transform 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 2250ms ease,
+    background-color 1200ms ease;
+}
+
+.process-list .card.process-item.reveal.in-view {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.process-list .card.process-item.reveal.in-view.is-pointer-hover {
+  transform: translateX(0) scale(1.024);
+}
+
+.process-list .process-item.reveal:not(.in-view):nth-child(2) {
+  transition-delay: 90ms, 90ms, 0ms, 0ms;
+}
+
+.process-list .process-item.reveal:not(.in-view):nth-child(3) {
+  transition-delay: 180ms, 180ms, 0ms, 0ms;
+}
+
 @keyframes gradientDrift {
   0% {
     transform: translate3d(-1.5%, -0.8%, 0) scale(1);

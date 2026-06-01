@@ -220,7 +220,9 @@
     );
 
     revealItems.forEach((item) => {
-      item.style.transitionDelay = "0ms";
+      if (!item.closest(".process-list")) {
+        item.style.transitionDelay = "0ms";
+      }
       observer.observe(item);
     });
   }
